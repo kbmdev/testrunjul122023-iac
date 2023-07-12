@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "corporate-app.fullname" . }}
+  labels:
+    app: {{ template "corporate-app.name" . }}
+    chart: {{ template "corporate-app.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    backstage.io/kubernetes-id: {{ template "corporate-app.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ template "corporate-app.name" . }}
+    release: {{ .Release.Name }}
